@@ -15,7 +15,6 @@ function reqListener() {
   oReq2.addEventListener('load', reqListener2);
   oReq2.open('GET', obj.homeworld);
   oReq2.send();
-
 }
 
 function reqListener2() {
@@ -58,8 +57,9 @@ function filmList() {
   let obj = JSON.parse(this.responseText);
   let films = obj.results;
 
-  console.log(films);
+  console.log(obj);
 
+  //loop through object 'film'
   films.forEach(function (element, index, array) {
 
     let createFilm = document.createElement('li');
@@ -68,6 +68,8 @@ function filmList() {
     let filmTitle = document.createElement('H2');
     filmTitle.className = 'filmTitle';
     createFilm.appendChild(filmTitle);
+    //element is each object that has the .title property
+    //console.log(element)
     filmTitle.innerHTML = element.title;
 
     let planetsTitle = document.createElement('H3');
@@ -80,18 +82,21 @@ function filmList() {
 
     //instantiate new XHR object for film planets
     let filmPlanets = element.planets;
-    //console.log(filmPlanets);
+
     filmPlanets.forEach(function (element, index, array) {
-      let reqPlanets = new XMLHttpRequest();
+      //for each api, xmlhttprequest
+      let requestPlanet = new XMLHttpRequest();
       //console.log(element)
-      
-      reqPlanets.addEventListener('load', planets);
-      reqPlanets.open('GET', element);
-      reqPlanets.send();
+
+      requestPlanet.addEventListener('load', planets);
+      requestPlanet.open('GET', element);
+      requestPlanet.send();
 
       function planets() {
-        let formatPlanets = JSON.parse(this.response);
-        let planetName = formatPlanets.name;
+        //api planet names requested function
+        //console.log(formatPlanets)
+        let objPlanet = JSON.parse(this.response);
+        let planetName = objPlanet.name;
 
         let createPlanets = document.createElement('li');
         createPlanets.className = 'planet';
@@ -104,4 +109,3 @@ function filmList() {
     })
   })
 }
-
